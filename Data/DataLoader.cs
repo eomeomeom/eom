@@ -44,9 +44,8 @@ public class DataLoader : MonoBehaviour
     
     private IEnumerator LoadTableWorker()
     {
-        var configSO = ResourceManager.LoadAddressableWaitForCompletion<GameConfig>(DefineName.ScriptableObject.GAME_CONFIG_DATA);
         //데이터 URL
-        var schemaPath = configSO.SchemaPath;
+        var schemaPath = "";
 
         this.errorString = "";
         Dictionary<string, int> tableVersionDataFromServer = null;

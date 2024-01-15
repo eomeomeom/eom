@@ -15,11 +15,10 @@ public class DataGenerator
 
     static IEnumerator GeneratorData()
     {
-        var error = "";
-        var configSO = ResourceManager.LoadAddressableWaitForCompletion<GameConfig>(DefineName.ScriptableObject.GAME_CONFIG_DATA);
         //데이터 URL
-        var schemaPath = configSO.SchemaPath;
-        var enumPath = configSO.EnumPath;
+        var schemaPath = "";
+        var enumPath = "";
+        var error = "";
 
         //common enum
         while (string.IsNullOrEmpty(error))
