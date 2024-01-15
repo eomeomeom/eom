@@ -1,0 +1,79 @@
+﻿local class = middleClass('BaseUI'):AddProperty({
+  {"goRoot", "UnityEngine.GameObject"},
+})
+
+
+------------------------------------------------------------------------------- 
+
+class.BaseUI_Show = CheckArguments{
+  { name = "self", type = class.name },
+  call = function(self)
+
+  if self.goRoot ~= nil then
+    self.goRoot:SetActive(true)
+  end
+  
+  self.gameObject:SetActive(true)
+  
+  --[[
+  if self.load == nil then
+    self.load = false
+  end
+  
+  if self.load then return end
+  self.load = true
+  
+  if self.locals == nil then return end
+  for i=1, #self.locals, 1 do 
+    local item = self.locals[i]
+    if not Slua.IsNull(item) then
+      local temp = item:GetComponent("TMPro.TMP_Text")
+      if nil == temp then
+        temp = item:GetComponent("TMPro.TextMeshProUGUI")
+      end
+      if nil ~= temp then
+        temp.text = Localizer.GetFromLocalTable(item.name)
+      end
+    end
+  end
+  --]]
+  
+end
+}
+
+------------------------------------------------------------------------------- 
+
+class.BaseUI_Hide = CheckArguments{
+  { name = "self", type = class.name },
+  call = function(self)
+
+  self.goRoot:SetActive(false)
+  self.gameObject:SetActive(false)
+  
+end
+}
+------------------------------------------------------------------------------- 
+
+class.BaseUI_Back = CheckArguments{
+  { name = "self", type = class.name },
+  call = function(self)
+
+  self:BaseUI_Hide()
+  
+end
+}
+
+-------------------------------------------------------------------------------
+
+class.BaseUI_Showing = CheckArguments{
+  { name = "self", type = class.name },
+  call = function(self)
+
+  return CheckReturn(self.goRoot.activeInHierarchy, "boolean")
+  
+end
+}
+
+-------------------------------------------------------------------------------
+
+return class
