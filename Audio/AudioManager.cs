@@ -1,11 +1,22 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace AudioSystem
 {
-    public partial class AudioManager : Singleton<AudioManager>
+    [SLua.CustomLuaClass]
+    public partial class AudioManager : MonoBehaviour
     {
+        static AudioManager instanceValue;
+        public static AudioManager instance
+        {
+            get
+            {
+                return instanceValue;
+            }
+        }
+
+
         public AudioSource bgmAudioSource;
 
         [System.Serializable]
@@ -15,29 +26,19 @@ namespace AudioSystem
             public ComplexAudio complexAudio;
         }
 
-        List<NameAndComplexAudio> bgmList = new List<NameAndComplexAudio>();
-        Dictionary<string, AudioClip> soundList = new Dictionary<string, AudioClip>();
+        public List<NameAndComplexAudio> bgmList = new List<NameAndComplexAudio>();
 
         ComplexAudio currentBgm = null;
 
-        private AudioListener audioListener;
+
         void Awake()
         {
-            audioListener = this.gameObject.AddComponent<AudioListener>();
-            bgmAudioSource = this.gameObject.AddComponent<AudioSource>();
+            instanceValue = this;
 
-            bgmList.Clear();
-            soundList.Clear();
-
-            //aduio source load
-            ////////////////////
-
-            
             for (int i = 0; i < MaxSoundAudioSourceCount; ++i)
             {
                 AddSoundAudioSource();
             }
-
         }
 
         private void Update()
@@ -48,13 +49,6 @@ namespace AudioSystem
             }
 
             UpdateSound();
-        }
-
-        public void SetBgmMute(bool isMute)
-        {
-            bgmAudioSource.mute = isMute;
-            User.IsBgmPlay = !isMute;
-            User.SaveUserData();
         }
 
         public bool PlayBGM(string bgmName)
@@ -83,19 +77,6 @@ namespace AudioSystem
             this.currentBgm = foundCA.complexAudio;
 
             return true;
-        }
-
-        public void StopBGM()
-        {
-            if (null == this.currentBgm)
-                return;
-            
-            this.currentBgm.Stop();
-            this.currentBgm = null;
-        }
-        public void AudioOnOff()
-        {
-            audioListener.enabled = !audioListener.enabled; 
         }
     }
 }
